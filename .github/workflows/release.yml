@@ -1,0 +1,23 @@
+name: Automate crosstool-ng Release
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version ID (ie 1.24.0)'
+        required: true
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Create Source Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: crosstool-ng-${{ github.event.inputs.version }}
+          release_name: crosstool-ng-${{ github.event.inputs.version }}
+          draft: false
+          prerelease: false
